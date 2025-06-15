@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: MedMitra Healthcare API
+  version: 1.0.0
+  description: API documentation for Healthcare Management Application
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: Unauthorized
+
+  /appointments:
+    post:
+      tags:
+        - Appointments
+      summary: Schedule an appointment
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patientId:
+                  type: string
+                doctorId:
+                  type: string
+                date:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Appointment Created
+        '400':
+          description: Validation Error
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
